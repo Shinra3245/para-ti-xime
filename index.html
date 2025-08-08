@@ -7,14 +7,19 @@
 <style>
   :root{ --rose:#ff4d6d; --bg:#0f0f13; --leaf:#2fa36b; --stem:#2b7a57; }
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; display:grid; place-items:center; background:var(--bg); color:#fff;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    /* permitir scroll en móviles */
-    overflow-y:auto; position:relative;
-  }
+  html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overflow-y: auto; /* Permite scroll */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Comienza arriba para que se pueda bajar */
+  padding: 20px 0; /* Espacio arriba y abajo */
+}
 
   /* corazones del fondo / click */
   .raindrop{
@@ -31,13 +36,15 @@
     100% { transform: translateY(110vh) translateX(var(--drift, 0px)); opacity:0 }
   }
 
-  .card{
-    width:min(760px,92vw); height:min(1020px,92vh);
-    background:#151722; border-radius:22px; overflow:hidden;
-    box-shadow:0 12px 36px #0008; position:relative;
-    display:flex; flex-direction:column; z-index:1;
-    margin: 24px 0; /* deja aire arriba/abajo por si el teclado móvil empuja */
-  }
+  .card {
+  width: min(560px, 92vw);
+  min-height: 800px; /* Altura mayor para pantallas pequeñas */
+  background: #151722;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px #0008;
+  position: relative;
+}
   .top{ position:relative; flex: 0 0 58%; }
   .stage{
     position:absolute; inset:12px; border-radius:18px;
@@ -100,6 +107,12 @@
     .stroke-draw{animation:none; stroke-dashoffset:0}
     .petal{animation:none; transform:scale(1)}
   }
+
+@media (max-width: 400px) {
+  .card {
+    min-height: 1000px; /* Más alta en móvil */
+  }
+}
 </style>
 </head>
 <body>
@@ -285,3 +298,4 @@ function drawBouquetOptimized(){
 </script>
 </body>
 </html>
+
