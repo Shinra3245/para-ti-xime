@@ -12,11 +12,14 @@
     margin:0; display:grid; place-items:center; background:var(--bg); color:#fff;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
-    overflow:hidden; position:relative;
+    /* permitir scroll en móviles */
+    overflow-y:auto; position:relative;
   }
 
+  /* corazones del fondo / click */
   .raindrop{
-    position:absolute; top:-24px; font-size:16px; line-height:1; color:var(--rose);
+    position:fixed; top:-24px; /* fixed para no afectar el flujo y evitar scroll extra */
+    font-size:16px; line-height:1; color:var(--rose);
     filter: drop-shadow(0 0 6px #ff9eb1);
     opacity:0; animation: fall var(--dur,5s) linear forwards;
     pointer-events:none; user-select:none; z-index:0;
@@ -25,7 +28,7 @@
   @keyframes fall{
     0%{ transform: translateY(-24px) translateX(0); opacity:0 }
     10%{ opacity:1 }
-    100%{ transform: translateY(110vh) translateX(var(--drift, 0px)); opacity:0 }
+    100% { transform: translateY(110vh) translateX(var(--drift, 0px)); opacity:0 }
   }
 
   .card{
@@ -33,6 +36,7 @@
     background:#151722; border-radius:22px; overflow:hidden;
     box-shadow:0 12px 36px #0008; position:relative;
     display:flex; flex-direction:column; z-index:1;
+    margin: 24px 0; /* deja aire arriba/abajo por si el teclado móvil empuja */
   }
   .top{ position:relative; flex: 0 0 58%; }
   .stage{
@@ -57,15 +61,15 @@
     display:grid; place-items:end center; z-index:1; pointer-events:none;
   }
   svg{ overflow:visible; }
-  .stroke-draw{ stroke-dasharray:600; stroke-dashoffset:600; animation:draw 1.8s ease-out forwards; }
+  .stroke-draw{ stroke-dasharray:600; stroke-dashoffset:600; animation:draw 1.2s ease-out forwards; }
   @keyframes draw{ to{ stroke-dashoffset:0 } }
 
   .petal{
     transform: scale(0); transform-origin:center;
-    animation: bloom .5s ease-out forwards;
-    filter: drop-shadow(0 0 6px #ffb3c6);
+    animation: bloom .45s ease-out forwards;
+    filter: drop-shadow(0 0 4px #ffb3c6);
   }
-  @keyframes bloom{ 60%{ transform: scale(1.15) } 100%{ transform: scale(1) } }
+  @keyframes bloom{ 60%{ transform: scale(1.12) } 100%{ transform: scale(1) } }
 
   .msg{
     flex:1 1 auto; padding:10px 16px 18px; text-align:center;
@@ -74,13 +78,7 @@
   h1{ margin:12px 0 8px; font-size:clamp(18px,4.5vw,26px); color:var(--rose)}
   p{ margin:6px 0 0; line-height:1.45; font-size:clamp(14px,4vw,16px)}
 
-  @media (prefers-reduced-motion: reduce){
-    .raindrop{animation:none; opacity:.85}
-    .stroke-draw{animation:none; stroke-dashoffset:0}
-    .petal{animation:none; transform:scale(1)}
-  }
-
-  /* corazones creados al click (sobre todo) */
+  /* capa de efectos por encima */
   #fx{ position:fixed; inset:0; pointer-events:none; z-index:999; }
   .clickdrop{ animation: fallFrom var(--dur,5s) linear forwards; }
   @keyframes fallFrom{
@@ -94,6 +92,13 @@
     .card{ height:96vh; min-height:890px; }
     .grid{ top:-2%; }
     .bouquet{ height:52%; bottom:5%; }
+  }
+
+  /* Respeta “reducir movimiento” del sistema */
+  @media (prefers-reduced-motion: reduce){
+    .raindrop{animation:none; opacity:.6}
+    .stroke-draw{animation:none; stroke-dashoffset:0}
+    .petal{animation:none; transform:scale(1)}
   }
 </style>
 </head>
@@ -127,9 +132,16 @@
   </div>
 
 <script>
-/* Lluvia de corazones por todo el fondo (sobre la tarjeta via #fx) */
+/* ===== Capa de efectos ===== */
 const fx = document.getElementById('fx');
+
+/* ===== Lluvia de corazones con CAP de elementos ===== */
+let activeDrops = 0;
+const MAX_DROPS = 140;     // límite de corazones simultáneos
+const RAIN_INTERVAL = 180; // ms entre corazones
+
 function spawnRain(){
+  if (activeDrops >= MAX_DROPS) return; // pausa si llegamos al tope
   const el = document.createElement('span');
   el.className = 'raindrop';
   el.style.left = (Math.random()*window.innerWidth) + 'px';
@@ -139,12 +151,17 @@ function spawnRain(){
   el.style.fontSize = size + 'px';
   el.style.setProperty('--dur', dur+'s');
   el.style.setProperty('--drift', drift+'px');
-  fx.appendChild(el);
-  setTimeout(()=> el.remove(), dur*1000 + 120);
-}
-setInterval(spawnRain, 180);
 
-/* Corazón central */
+  activeDrops++;
+  fx.appendChild(el);
+  setTimeout(()=>{
+    el.remove();
+    activeDrops = Math.max(0, activeDrops-1);
+  }, dur*1000 + 120);
+}
+setInterval(spawnRain, RAIN_INTERVAL);
+
+/* ===== Corazón central (mosaico) ===== */
 const grid = document.getElementById('grid');
 function buildHeart(){
   const COLS=29, ROWS=23, DOT=14;
@@ -167,41 +184,50 @@ function buildHeart(){
       }
     }
   }
-  setTimeout(drawBouquet, 2500);
+  setTimeout(drawBouquetOptimized, 2500);
 }
 setTimeout(buildHeart, 4000);
 
-/* Corazón en el punto tocado/clic (en toda la página visible) */
+/* ===== Corazón al click/tap (en toda la pantalla, sobre todo) ===== */
 function spawnHeartAtClient(x,y){
+  if (activeDrops >= MAX_DROPS) return; // respeta el límite
   const el = document.createElement('span');
   el.className = 'raindrop clickdrop';
   el.style.left = x+'px';
   el.style.top  = y+'px';
   const size = 14 + Math.random()*8;
-  const dur  = 3.8 + Math.random()*2.2;
+  const dur  = 3.4 + Math.random()*2.0;
   const drift= (Math.random()<.5?-1:1) * (10 + Math.random()*28);
   const dist = (window.innerHeight - y) + 40;
   el.style.fontSize = size+'px';
   el.style.setProperty('--dur', dur+'s');
   el.style.setProperty('--drift', drift+'px');
   el.style.setProperty('--dy', dist+'px');
+
+  activeDrops++;
   fx.appendChild(el);
-  setTimeout(()=> el.remove(), dur*1000 + 150);
+  setTimeout(()=>{
+    el.remove();
+    activeDrops = Math.max(0, activeDrops-1);
+  }, dur*1000 + 150);
 }
 document.addEventListener('pointerdown', e => spawnHeartAtClient(e.clientX, e.clientY));
 
-/* Ramo de hortensias */
-function drawBouquet(){
+/* ===== Ramo de hortensias (optimizado en lotes) ===== */
+function drawBouquetOptimized(){
   const holder = document.getElementById('bouquet');
   const w=360,h=180, svgNS='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(svgNS,'svg');
-  svg.setAttribute('viewBox',`0 0 ${w} ${h}`); svg.setAttribute('width',w); svg.setAttribute('height',h);
+  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  svg.setAttribute('width',w); svg.setAttribute('height',h);
 
+  // Tallos (una sola animación de trazo)
   const stems=document.createElementNS(svgNS,'path');
   stems.setAttribute('d','M170,160 C180,130 200,110 210,90 M170,160 C160,130 140,115 125,95 M170,160 C175,130 220,120 235,105');
   stems.setAttribute('fill','none'); stems.setAttribute('stroke','var(--stem)'); stems.setAttribute('stroke-width','6'); stems.setAttribute('class','stroke-draw');
   svg.appendChild(stems);
 
+  // Hojas (dos piezas animadas)
   const leaf=(x,y,r,rot=0)=>{
     const p=document.createElementNS(svgNS,'path');
     p.setAttribute('d',`M ${x} ${y} c ${-r} ${-r/3}, ${-r} ${r/3}, 0 ${r} c ${r} ${-r/3}, ${r} ${r/3}, 0 ${-r} z`);
@@ -212,34 +238,47 @@ function drawBouquet(){
   };
   leaf(145,125,26,-25); leaf(200,125,28,30);
 
-  const clusters=[{cx:130,cy:95,radius:44,count:75},{cx:170,cy:80,radius:48,count:90},{cx:215,cy:95,radius:44,count:75}];
+  // Tres “pompones” con menos elementos y por lotes
+  const clusters=[{cx:130,cy:95,radius:40,count:48},{cx:170,cy:80,radius:44,count:60},{cx:215,cy:95,radius:40,count:48}];
 
-  const makePetal=(gx,gy,delay)=>{
-    const g=document.createElementNS(svgNS,'g');
-    g.setAttribute('class','petal'); g.style.animationDelay=`${delay}ms`;
+  const makePetal=(gx,gy)=>{
+    const g=document.createElementNS(svgNS,'g'); g.setAttribute('class','petal');
     const base=`hsl(${340+Math.random()*10},85%,${60+Math.random()*10}%)`;
-    const r=3.8+Math.random()*1.1;
-    [[0,-r],[r,0],[0,r],[-r,0]].forEach(([dx,dy])=>{
-      const c=document.createElementNS(svgNS,'circle');
-      c.setAttribute('cx',gx+dx); c.setAttribute('cy',gy+dy); c.setAttribute('r',r); c.setAttribute('fill',base);
-      g.appendChild(c);
-    });
+    const r=3.4+Math.random()*0.9;
+    const addCircle=(dx,dy)=>{ const c=document.createElementNS(svgNS,'circle');
+      c.setAttribute('cx',gx+dx); c.setAttribute('cy',gy+dy); c.setAttribute('r',r); c.setAttribute('fill',base); g.appendChild(c); };
+    addCircle(0,-r); addCircle(r,0); addCircle(0,r); addCircle(-r,0);
     const center=document.createElementNS(svgNS,'circle');
-    center.setAttribute('cx',gx); center.setAttribute('cy',gy); center.setAttribute('r',1.6); center.setAttribute('fill','#ffd6e3');
-    g.appendChild(center);
+    center.setAttribute('cx',gx); center.setAttribute('cy',gy); center.setAttribute('r',1.4); center.setAttribute('fill','#ffd6e3'); g.appendChild(center);
     return g;
   };
 
-  clusters.forEach((cl,idx)=>{
+  // Batching: insertar 12 “florcitas” por frame para no congelar
+  const items=[];
+  clusters.forEach(cl=>{
     for(let i=0;i<cl.count;i++){
       const a=Math.PI*2*Math.random();
       const rr=Math.sqrt(Math.random())*cl.radius;
       const x=cl.cx+Math.cos(a)*rr;
       const y=cl.cy+Math.sin(a)*rr;
-      const delay=400+idx*200+i*10;
-      svg.appendChild(makePetal(x,y,delay));
+      items.push({x,y});
     }
   });
+
+  let idx=0;
+  function step(){
+    const frag=document.createDocumentFragment();
+    for(let k=0;k<12 && idx<items.length; k++, idx++){
+      const {x,y}=items[idx];
+      const pet=makePetal(x,y);
+      // delay suave sin bloquear el hilo: usa transition-delay vía style animationDelay
+      pet.style.animationDelay = (idx*8) + 'ms';
+      frag.appendChild(pet);
+    }
+    svg.appendChild(frag);
+    if(idx<items.length) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 
   holder.appendChild(svg);
 }
