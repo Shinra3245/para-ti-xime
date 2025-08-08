@@ -10,7 +10,7 @@
     --bg:#0f0f13;
     --leaf:#2fa36b;
     --stem:#2b7a57;
-    --click:#A7C7FF; /* azul pastel para clicks */
+    --click:#A7C7FF; 
   }
 
   *{ box-sizing:border-box }
@@ -41,6 +41,7 @@
     filter:drop-shadow(0 0 6px #ff9eb1);
     opacity:0; animation:fall var(--dur,5s) linear forwards;
     pointer-events:none; user-select:none; z-index:0;
+    will-change: transform, opacity; 
   }
   .raindrop::before{ content:"❤" }
   @keyframes fall{
@@ -75,7 +76,7 @@
     display:none; place-content:center; gap:6px; z-index:1;
   }
   .grid.show{ display:grid }
-  .dot{ width:14px; height:14px; display:block; transform:scale(0); opacity:0 }
+  .dot{ width:14px; height:14px; display:block; transform:scale(0); opacity:0; will-change: transform, opacity; /* PERF */ }
   .dot::before{ content:"❤"; display:block; text-align:center; font-size:14px; color:var(--rose) }
   .dot.reveal{ animation:reveal .7s both }
   @keyframes reveal{ 0%{transform:scale(.2);opacity:0} 100%{transform:scale(1);opacity:1} }
@@ -92,6 +93,7 @@
     transform:scale(0); transform-origin:center;
     animation:bloom .45s ease-out forwards;
     filter:drop-shadow(0 0 4px #ffb3c6);
+    will-change: transform, opacity; 
   }
   @keyframes bloom{ 60%{transform:scale(1.12)} 100%{transform:scale(1)} }
 
@@ -107,6 +109,7 @@
     animation:fallFrom var(--dur,5s) linear forwards;
     color:var(--click);
     filter:drop-shadow(0 0 6px var(--click));
+    will-change: transform, opacity; /* PERF */
   }
   @keyframes fallFrom{
     0%{ transform:translateY(0) translateX(0); opacity:0 }
@@ -149,6 +152,7 @@
 <script>
   const fx = document.getElementById('fx');
 
+  const isMobile = matchMedia('(max-width: 600px)').matches;
   let activeDrops = 0;
   const MAX_DROPS = 140;
   const RAIN_INTERVAL = 180;
@@ -170,10 +174,13 @@
   }
   setInterval(spawnRain, RAIN_INTERVAL);
 
+  /* corazon dibujado */
   const grid = document.getElementById('grid');
   function buildHeart(){
-    const COLS=29, ROWS=23, DOT=14;
-    grid.style.gridTemplateColumns = `repeat(${COLS}, ${DOT}px)`;
+    const DOT = isMobile ? 12 : 14;
+    const COLS = isMobile ? 23 : 29;
+    const ROWS = isMobile ? 19 : 23;
+    grid.style.gridTemplateColumns = 'repeat(' + COLS + ', ' + DOT + 'px)';
     grid.classList.add('show');
     const XMIN=-1.8, XMAX=1.8, YMIN=-1.7, YMAX=1.7;
     for(let j=0;j<ROWS;j++){
@@ -183,8 +190,10 @@
         const f = Math.pow(x*x + y*y - 1, 3) - x*x*y*y*y;
         const cell = document.createElement('span');
         if(f<=0){
-          cell.className='dot'; grid.appendChild(cell);
-          setTimeout(()=>cell.classList.add('reveal'), 38*(i+j));
+          cell.className='dot reveal';
+          const delay = (isMobile ? 18*j : 28*j + (i%3)*6);
+          cell.style.animationDelay = delay + 'ms';
+          grid.appendChild(cell);
         }else{
           cell.style.width = cell.style.height = DOT+'px';
           grid.appendChild(cell);
@@ -195,26 +204,47 @@
   }
   setTimeout(buildHeart, 4000);
 
+  /* Corazones al hacer click */
+  const pool = [];
+  let lastClick = 0;
+  function getDrop(){
+    return pool.pop() || document.createElement('span');
+  }
+  function releaseDrop(el){
+    if (el.parentNode) el.remove();
+    el._onEnd = null;
+    pool.push(el);
+  }
   function spawnHeartAtClient(x,y){
     if(activeDrops >= MAX_DROPS) return;
-    const el = document.createElement('span');
+    const el = getDrop();
     el.className = 'raindrop clickdrop';
     el.style.left = x+'px';
     el.style.top  = y+'px';
     const size = 14 + Math.random()*8;
-    const dur  = 3.4 + Math.random()*2.0;
+    const dur  = (isMobile? 2.2 : 3.0) + Math.random()* (isMobile? 1.2 : 2.0);
     const drift= (Math.random()<.5?-1:1)*(10+Math.random()*28);
     const dist = (window.innerHeight - y) + 40;
     el.style.fontSize = size + 'px';
     el.style.setProperty('--dur', dur+'s');
     el.style.setProperty('--drift', drift+'px');
     el.style.setProperty('--dy', dist+'px');
+
+  
+    el._onEnd = () => { activeDrops = Math.max(0, activeDrops-1); releaseDrop(el); };
+    el.addEventListener('animationend', el._onEnd, {once:true});
+
     activeDrops++;
     fx.appendChild(el);
-    setTimeout(()=>{ el.remove(); activeDrops=Math.max(0,activeDrops-1); }, dur*1000+150);
   }
-  document.addEventListener('pointerdown', e => spawnHeartAtClient(e.clientX, e.clientY));
+  document.addEventListener('pointerdown', e => {
+    const now = performance.now();
+    if (now - lastClick < 100) return;
+    lastClick = now;
+    spawnHeartAtClient(e.clientX, e.clientY);
+  });
 
+  /* Ramo de flores dibujado */
   function drawBouquetOptimized(){
     const holder = document.getElementById('bouquet');
     const w=360,h=180, svgNS='http://www.w3.org/2000/svg';
@@ -236,7 +266,11 @@
     };
     leaf(145,125,26,-25); leaf(200,125,28,30);
 
-    const clusters=[{cx:130,cy:95,radius:40,count:48},{cx:170,cy:80,radius:44,count:60},{cx:215,cy:95,radius:40,count:48}];
+    const clusters=[
+      {cx:130,cy:95,radius:40,count: (isMobile ? 30 : 48)},
+      {cx:170,cy:80,radius:44,count: (isMobile ? 36 : 60)},
+      {cx:215,cy:95,radius:40,count: (isMobile ? 30 : 48)}
+    ];
     const makePetal=(gx,gy)=>{
       const g=document.createElementNS(svgNS,'g'); g.setAttribute('class','petal');
       const base=`hsl(${340+Math.random()*10},85%,${60+Math.random()*10}%)`;
@@ -262,7 +296,7 @@
     let idx=0;
     function step(){
       const frag=document.createDocumentFragment();
-      for(let k=0;k<12 && idx<items.length; k++,idx++){
+      for(let k=0;k<(isMobile?8:16) && idx<items.length; k++,idx++){
         const {x,y}=items[idx];
         const pet=makePetal(x,y);
         pet.style.animationDelay=(idx*8)+'ms';
