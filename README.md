@@ -1,18 +1,27 @@
 # 💖 Para Ti — Animación Interactiva
 
-Este proyecto es una página web interactiva diseñada como un detalle especial para una persona querida. Combina animaciones CSS y JavaScript para crear un ambiente romántico y visualmente atractivo.
+> Un detalle digital lleno de corazones, colores y flores, pensado para sorprender a alguien especial.
+
+![Vista previa](screenshots/preview.PNG) <!-- Puedes reemplazar con una captura real -->
+
+🌐 **Ver en vivo:** [Abrir página](https://ximeamor.space)
+
+---
 
 ## ✨ Características
 
-- **Lluvia de corazones** constante en el fondo, con corazones extra que aparecen al hacer clic o tocar la pantalla.
-- **Corazón central** formado por una cuadrícula de puntos que aparecen secuencialmente con animación.
-- **Ramo de flores SVG** que se dibuja y florece de forma progresiva.
-- **Optimización de rendimiento**:
-  - Menor densidad y tamaño de elementos en dispositivos móviles.
-  - Animaciones optimizadas con `animation-delay` en lugar de múltiples `setTimeout`.
+- 🌧 **Lluvia de corazones** constante en el fondo.
+- 🖱 **Interacción al clic/tocar**: genera corazones extra que flotan y desaparecen.
+- ❤️ **Corazón central animado** formado por una cuadrícula de puntos con efecto secuencial.
+- 💐 **Ramo de flores SVG** que se dibuja línea por línea y florece progresivamente.
+- ⚡ **Optimizaciones de rendimiento**:
+  - Menor densidad y tamaño en pantallas móviles.
+  - `animation-delay` en vez de cientos de `setTimeout`.
   - Dibujo por lotes del ramo con `requestAnimationFrame`.
-  - Pool de elementos reutilizables para los corazones generados por clic.
-  - Uso de `will-change` para mejoras de rendimiento en GPU.
+  - Pool reutilizable para corazones generados por clic.
+  - `will-change` en CSS para suavizar animaciones.
+
+---
 
 ## 📂 Estructura del proyecto
 
@@ -20,34 +29,53 @@ Este proyecto es una página web interactiva diseñada como un detalle especial 
 index.html      # Página principal con HTML, CSS y JS integrados
 ```
 
-> *No requiere dependencias externas. Todo el código y estilos están incluidos en un solo archivo HTML.*
+> 💡 **No requiere dependencias externas**: Todo el código y estilos están en un único archivo HTML.
+
+---
 
 ## 🚀 Uso
 
-1. Clona o descarga este repositorio.
-2. Abre el archivo `index.html` en tu navegador.
-3. Disfruta de la animación:
-   - Corazones cayendo de fondo.
-   - Haz clic o toca la pantalla para generar corazones adicionales.
-   - Observa cómo el corazón central se forma y el ramo florece.
+1. 📥 **Clonar o descargar** este repositorio.
+2. 🌐 **Abrir** el archivo `index.html` en tu navegador o visitar el enlace en vivo.
+3. 🎯 **Interactuar**:
+   - Disfruta la lluvia de corazones.
+   - Haz clic o toca para añadir más corazones.
+   - Observa cómo se forma el corazón central y florece el ramo.
+
+---
 
 ## 📱 Compatibilidad
 
-- Compatible con navegadores modernos.
-- Adaptado para pantallas móviles y de escritorio.
-- Incluye soporte para usuarios con **preferencia de reducción de movimiento** (`prefers-reduced-motion`).
+- ✅ Navegadores modernos (Chrome, Edge, Firefox, Safari).
+- 📱 Adaptado para pantallas móviles y escritorio.
+- ♿ Respeta `prefers-reduced-motion` para usuarios que desactivan animaciones.
+
+---
 
 ## 🛠 Personalización
 
-Puedes modificar fácilmente:
-- Colores (`:root` en CSS).
-- Texto de los mensajes.
-- Cantidad y tamaño de puntos del corazón.
-- Número de pétalos del ramo.
+Puedes cambiar fácilmente en el CSS:
+- 🎨 Colores (`:root`).
+- 📝 Texto de los mensajes.
+- 🔢 Tamaño y cantidad de puntos del corazón.
+- 🌺 Cantidad de pétalos del ramo.
+
+---
+
+## 🖼 Capturas de ejemplo
+
+| Corazón central | Ramo floreciendo | Lluvia de corazones |
+|-----------------|------------------|---------------------|
+| ![Corazón](screenshots/corazon.PNG) | ![Ramo](screenshots/ramo.PNG) | ![Lluvia](screenshots/lluvia.PNG) |
+
+*(Reemplaza las imágenes con capturas reales de tu página)*
+
+---
 
 ## 📄 Licencia
 
-Este proyecto se distribuye con fines personales y educativos. Puedes modificarlo y adaptarlo para tus propios proyectos, pero se recomienda dar crédito al autor original.
+Este proyecto se distribuye con fines personales y educativos.  
+Puedes modificarlo y adaptarlo para tus propios proyectos, pero se recomienda dar crédito al autor original.
 
 ---
-Hecho Por Omar Bolaños con ❤️ y mucho cariño.
+💌 Hecho con ❤️, CSS y JavaScript.
