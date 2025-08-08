@@ -4,7 +4,7 @@
 
 ![Vista previa](screenshots/preview.PNG) <!-- Puedes reemplazar con una captura real -->
 
-🌐 **Ver en vivo:** [Abrir página](https://ximeamor.space)
+🌐 **ximeamor.space** [Abrir página](https://ximeamor.space)
 
 ---
 
@@ -78,4 +78,4 @@ Este proyecto se distribuye con fines personales y educativos.
 Puedes modificarlo y adaptarlo para tus propios proyectos, pero se recomienda dar crédito al autor original.
 
 ---
-💌 Hecho con ❤️, CSS y JavaScript.
+💌 Hecho por Omar Bolaños con ❤️, CSS y JavaScript.
