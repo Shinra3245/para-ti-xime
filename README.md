@@ -4,7 +4,7 @@
 
 ![Vista previa](screenshots/preview.PNG) <!-- Puedes reemplazar con una captura real -->
 
-🌐 **ximeamor.space** [Abrir página](https://ximeamor.space)
+🌐 **Ver en Vivo** [ximeamor.space](https://ximeamor.space)
 
 ---
 
