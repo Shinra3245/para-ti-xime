@@ -68,7 +68,6 @@ Puedes cambiar fácilmente en el CSS:
 |-----------------|------------------|---------------------|
 | ![Corazón](screenshots/corazon.PNG) | ![Ramo](screenshots/ramo.PNG) | ![Lluvia](screenshots/lluvia.PNG) |
 
-*(Reemplaza las imágenes con capturas reales de tu página)*
 
 ---
 
