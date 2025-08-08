@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Para ti ❤️</title>
 <style>
-  :root{ --rose:#ff4d6d; --bg:#0f0f13; --leaf:#2fa36b; --stem:#2b7a57; }
-  *{box-sizing:border-box}
+:root{ --rose:#ff4d6d; --bg:#0f0f13; --leaf:#2fa36b; --stem:#2b7a57; }
+*{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; display:grid; place-items:center; background:var(--bg); color:#fff;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    /* permitir scroll en móviles */
+    overflow-y:auto; position:relative;
+  }
   html, body {
   height: 100%;
   margin: 0;
@@ -21,21 +29,28 @@
   padding: 20px 0; /* Espacio arriba y abajo */
 }
 
-  /* corazones del fondo / click */
-  .raindrop{
-    position:fixed; top:-24px; /* fixed para no afectar el flujo y evitar scroll extra */
-    font-size:16px; line-height:1; color:var(--rose);
-    filter: drop-shadow(0 0 6px #ff9eb1);
-    opacity:0; animation: fall var(--dur,5s) linear forwards;
-    pointer-events:none; user-select:none; z-index:0;
-  }
-  .raindrop::before{ content:"❤"; }
-  @keyframes fall{
-    0%{ transform: translateY(-24px) translateX(0); opacity:0 }
-    10%{ opacity:1 }
-    100% { transform: translateY(110vh) translateX(var(--drift, 0px)); opacity:0 }
-  }
+/* corazones del fondo / click */
+.raindrop{
+position:fixed; top:-24px; /* fixed para no afectar el flujo y evitar scroll extra */
+font-size:16px; line-height:1; color:var(--rose);
+filter: drop-shadow(0 0 6px #ff9eb1);
+opacity:0; animation: fall var(--dur,5s) linear forwards;
+pointer-events:none; user-select:none; z-index:0;
+}
+.raindrop::before{ content:"❤"; }
+@keyframes fall{
+0%{ transform: translateY(-24px) translateX(0); opacity:0 }
+10%{ opacity:1 }
+100% { transform: translateY(110vh) translateX(var(--drift, 0px)); opacity:0 }
+}
 
+  .card{
+    width:min(760px,92vw); height:min(1020px,92vh);
+    background:#151722; border-radius:22px; overflow:hidden;
+    box-shadow:0 12px 36px #0008; position:relative;
+    display:flex; flex-direction:column; z-index:1;
+    margin: 24px 0; /* deja aire arriba/abajo por si el teclado móvil empuja */
+  }
   .card {
   width: min(560px, 92vw);
   min-height: 800px; /* Altura mayor para pantallas pequeñas */
@@ -45,68 +60,68 @@
   box-shadow: 0 12px 36px #0008;
   position: relative;
 }
-  .top{ position:relative; flex: 0 0 58%; }
-  .stage{
-    position:absolute; inset:12px; border-radius:18px;
-    background: radial-gradient(1200px 420px at 50% 120%, #1d2030, #141621 60%, #10121a);
-    overflow:hidden;
-  }
-  .hint{ position:absolute; right:12px; top:12px; font-size:12px; opacity:.7 }
+.top{ position:relative; flex: 0 0 58%; }
+.stage{
+position:absolute; inset:12px; border-radius:18px;
+background: radial-gradient(1200px 420px at 50% 120%, #1d2030, #141621 60%, #10121a);
+overflow:hidden;
+}
+.hint{ position:absolute; right:12px; top:12px; font-size:12px; opacity:.7 }
 
-  .grid{
-    position:absolute; inset:6% 8% auto 8%; top:0%;
-    display:none; place-content:center; gap:6px; z-index:1;
-  }
-  .grid.show{display:grid;}
-  .dot{width:14px; height:14px; display:block; transform:scale(0); opacity:0}
-  .dot::before{content:"❤"; display:block; text-align:center; font-size:14px; color:var(--rose)}
-  .dot.reveal{animation:reveal .7s both}
-  @keyframes reveal{ 0%{transform:scale(.2); opacity:0} 100%{transform:scale(1); opacity:1} }
+.grid{
+position:absolute; inset:6% 8% auto 8%; top:0%;
+display:none; place-content:center; gap:6px; z-index:1;
+}
+.grid.show{display:grid;}
+.dot{width:14px; height:14px; display:block; transform:scale(0); opacity:0}
+.dot::before{content:"❤"; display:block; text-align:center; font-size:14px; color:var(--rose)}
+.dot.reveal{animation:reveal .7s both}
+@keyframes reveal{ 0%{transform:scale(.2); opacity:0} 100%{transform:scale(1); opacity:1} }
 
-  .bouquet{
-    position:absolute; left:0; right:0; bottom:6%; height:48%;
-    display:grid; place-items:end center; z-index:1; pointer-events:none;
-  }
-  svg{ overflow:visible; }
-  .stroke-draw{ stroke-dasharray:600; stroke-dashoffset:600; animation:draw 1.2s ease-out forwards; }
-  @keyframes draw{ to{ stroke-dashoffset:0 } }
+.bouquet{
+position:absolute; left:0; right:0; bottom:6%; height:48%;
+display:grid; place-items:end center; z-index:1; pointer-events:none;
+}
+svg{ overflow:visible; }
+.stroke-draw{ stroke-dasharray:600; stroke-dashoffset:600; animation:draw 1.2s ease-out forwards; }
+@keyframes draw{ to{ stroke-dashoffset:0 } }
 
-  .petal{
-    transform: scale(0); transform-origin:center;
-    animation: bloom .45s ease-out forwards;
-    filter: drop-shadow(0 0 4px #ffb3c6);
-  }
-  @keyframes bloom{ 60%{ transform: scale(1.12) } 100%{ transform: scale(1) } }
+.petal{
+transform: scale(0); transform-origin:center;
+animation: bloom .45s ease-out forwards;
+filter: drop-shadow(0 0 4px #ffb3c6);
+}
+@keyframes bloom{ 60%{ transform: scale(1.12) } 100%{ transform: scale(1) } }
 
-  .msg{
-    flex:1 1 auto; padding:10px 16px 18px; text-align:center;
-    color:#ffe6ec; font-weight:600; text-shadow:0 1px 0 #0006;
-  }
-  h1{ margin:12px 0 8px; font-size:clamp(18px,4.5vw,26px); color:var(--rose)}
-  p{ margin:6px 0 0; line-height:1.45; font-size:clamp(14px,4vw,16px)}
+.msg{
+flex:1 1 auto; padding:10px 16px 18px; text-align:center;
+color:#ffe6ec; font-weight:600; text-shadow:0 1px 0 #0006;
+}
+h1{ margin:12px 0 8px; font-size:clamp(18px,4.5vw,26px); color:var(--rose)}
+p{ margin:6px 0 0; line-height:1.45; font-size:clamp(14px,4vw,16px)}
 
-  /* capa de efectos por encima */
-  #fx{ position:fixed; inset:0; pointer-events:none; z-index:999; }
-  .clickdrop{ animation: fallFrom var(--dur,5s) linear forwards; }
-  @keyframes fallFrom{
-    0%{ transform: translateY(0) translateX(0); opacity:0 }
-    10%{ opacity:1 }
-    100%{ transform: translateY(var(--dy)) translateX(var(--drift,0px)); opacity:0 }
-  }
+/* capa de efectos por encima */
+#fx{ position:fixed; inset:0; pointer-events:none; z-index:999; }
+.clickdrop{ animation: fallFrom var(--dur,5s) linear forwards; }
+@keyframes fallFrom{
+0%{ transform: translateY(0) translateX(0); opacity:0 }
+10%{ opacity:1 }
+100%{ transform: translateY(var(--dy)) translateX(var(--drift,0px)); opacity:0 }
+}
 
-  /* móvil: más alto para que el 58% de .top sea grande */
-  @media (max-width: 480px){
-    .card{ height:96vh; min-height:890px; }
-    .grid{ top:-2%; }
-    .bouquet{ height:52%; bottom:5%; }
-  }
+/* móvil: más alto para que el 58% de .top sea grande */
+@media (max-width: 480px){
+.card{ height:96vh; min-height:890px; }
+.grid{ top:-2%; }
+.bouquet{ height:52%; bottom:5%; }
+}
 
-  /* Respeta “reducir movimiento” del sistema */
-  @media (prefers-reduced-motion: reduce){
-    .raindrop{animation:none; opacity:.6}
-    .stroke-draw{animation:none; stroke-dashoffset:0}
-    .petal{animation:none; transform:scale(1)}
-  }
+/* Respeta “reducir movimiento” del sistema */
+@media (prefers-reduced-motion: reduce){
+.raindrop{animation:none; opacity:.6}
+.stroke-draw{animation:none; stroke-dashoffset:0}
+.petal{animation:none; transform:scale(1)}
+}
 
 @media (max-width: 400px) {
   .card {
@@ -116,33 +131,33 @@
 </style>
 </head>
 <body>
-  <div id="fx" aria-hidden="true"></div>
+<div id="fx" aria-hidden="true"></div>
 
-  <div class="card" id="card">
-    <div class="top">
-      <div class="stage" id="stage">
-        <div class="hint">Toca para más ♥</div>
-        <div class="grid" id="grid"></div>
-        <div class="bouquet" id="bouquet" aria-hidden="true"></div>
-      </div>
-    </div>
+<div class="card" id="card">
+<div class="top">
+<div class="stage" id="stage">
+<div class="hint">Toca para más ♥</div>
+<div class="grid" id="grid"></div>
+<div class="bouquet" id="bouquet" aria-hidden="true"></div>
+</div>
+</div>
 
-    <div class="msg">
-      <h1>11 meses contigo</h1>
-      <p>
-        Gracias por permitirme ser parte de tu vida. Cada día a tu lado es un
-        regalo que atesoro profundamente. Tu amor y apoyo me inspiran a ser mejor.
-        Espero que este pequeño gesto te recuerde cuánto significas para mí.
-      </p>
-      <p>
-        Aunque no siempre pueda estar presente, quiero que sepas que estás en
-        mis pensamientos y en mi corazón. Te amo con todo mi ser y siempre
-        estaré aquí para ti.
-      </p>
-      <p style="margin-top:10px;"><strong>Con amor, el amor de tu vida</strong></p>
-      <p style="margin-top:10px; color:#ff9eb1; font-size:38px;"><strong>TE AMO XIME</strong></p>
-    </div>
-  </div>
+<div class="msg">
+<h1>11 meses contigo</h1>
+<p>
+Gracias por permitirme ser parte de tu vida. Cada día a tu lado es un
+regalo que atesoro profundamente. Tu amor y apoyo me inspiran a ser mejor.
+Espero que este pequeño gesto te recuerde cuánto significas para mí.
+</p>
+<p>
+Aunque no siempre pueda estar presente, quiero que sepas que estás en
+mis pensamientos y en mi corazón. Te amo con todo mi ser y siempre
+estaré aquí para ti.
+</p>
+<p style="margin-top:10px;"><strong>Con amor, el amor de tu vida</strong></p>
+<p style="margin-top:10px; color:#ff9eb1; font-size:38px;"><strong>TE AMO XIME</strong></p>
+</div>
+</div>
 
 <script>
 /* ===== Capa de efectos ===== */
@@ -154,148 +169,147 @@ const MAX_DROPS = 140;     // límite de corazones simultáneos
 const RAIN_INTERVAL = 180; // ms entre corazones
 
 function spawnRain(){
-  if (activeDrops >= MAX_DROPS) return; // pausa si llegamos al tope
-  const el = document.createElement('span');
-  el.className = 'raindrop';
-  el.style.left = (Math.random()*window.innerWidth) + 'px';
-  const size = 12 + Math.random()*8;
-  const dur  = 4.5 + Math.random()*2.8;
-  const drift= (Math.random()<.5?-1:1) * (8 + Math.random()*24);
-  el.style.fontSize = size + 'px';
-  el.style.setProperty('--dur', dur+'s');
-  el.style.setProperty('--drift', drift+'px');
+if (activeDrops >= MAX_DROPS) return; // pausa si llegamos al tope
+const el = document.createElement('span');
+el.className = 'raindrop';
+el.style.left = (Math.random()*window.innerWidth) + 'px';
+const size = 12 + Math.random()*8;
+const dur  = 4.5 + Math.random()*2.8;
+const drift= (Math.random()<.5?-1:1) * (8 + Math.random()*24);
+el.style.fontSize = size + 'px';
+el.style.setProperty('--dur', dur+'s');
+el.style.setProperty('--drift', drift+'px');
 
-  activeDrops++;
-  fx.appendChild(el);
-  setTimeout(()=>{
-    el.remove();
-    activeDrops = Math.max(0, activeDrops-1);
-  }, dur*1000 + 120);
+activeDrops++;
+fx.appendChild(el);
+setTimeout(()=>{
+el.remove();
+activeDrops = Math.max(0, activeDrops-1);
+}, dur*1000 + 120);
 }
 setInterval(spawnRain, RAIN_INTERVAL);
 
 /* ===== Corazón central (mosaico) ===== */
 const grid = document.getElementById('grid');
 function buildHeart(){
-  const COLS=29, ROWS=23, DOT=14;
-  grid.style.gridTemplateColumns = `repeat(${COLS}, ${DOT}px)`;
-  grid.classList.add('show');
-  const XMIN=-1.8, XMAX=1.8, YMIN=-1.7, YMAX=1.7;
-  for(let j=0;j<ROWS;j++){
-    for(let i=0;i<COLS;i++){
-      const x = XMIN + (i+.5)*(XMAX-XMIN)/COLS;
-      const y = YMAX - (j+.5)*(YMAX-YMIN)/ROWS;
-      const f = Math.pow(x*x + y*y - 1, 3) - x*x*y*y*y;
-      const cell = document.createElement('span');
-      if(f<=0){
-        cell.className='dot';
-        grid.appendChild(cell);
-        setTimeout(()=>cell.classList.add('reveal'), 38*(i+j));
-      }else{
-        cell.style.width = cell.style.height = DOT+'px';
-        grid.appendChild(cell);
-      }
-    }
-  }
-  setTimeout(drawBouquetOptimized, 2500);
+const COLS=29, ROWS=23, DOT=14;
+grid.style.gridTemplateColumns = `repeat(${COLS}, ${DOT}px)`;
+grid.classList.add('show');
+const XMIN=-1.8, XMAX=1.8, YMIN=-1.7, YMAX=1.7;
+for(let j=0;j<ROWS;j++){
+for(let i=0;i<COLS;i++){
+const x = XMIN + (i+.5)*(XMAX-XMIN)/COLS;
+const y = YMAX - (j+.5)*(YMAX-YMIN)/ROWS;
+const f = Math.pow(x*x + y*y - 1, 3) - x*x*y*y*y;
+const cell = document.createElement('span');
+if(f<=0){
+cell.className='dot';
+grid.appendChild(cell);
+setTimeout(()=>cell.classList.add('reveal'), 38*(i+j));
+}else{
+cell.style.width = cell.style.height = DOT+'px';
+grid.appendChild(cell);
+}
+}
+}
+setTimeout(drawBouquetOptimized, 2500);
 }
 setTimeout(buildHeart, 4000);
 
 /* ===== Corazón al click/tap (en toda la pantalla, sobre todo) ===== */
 function spawnHeartAtClient(x,y){
-  if (activeDrops >= MAX_DROPS) return; // respeta el límite
-  const el = document.createElement('span');
-  el.className = 'raindrop clickdrop';
-  el.style.left = x+'px';
-  el.style.top  = y+'px';
-  const size = 14 + Math.random()*8;
-  const dur  = 3.4 + Math.random()*2.0;
-  const drift= (Math.random()<.5?-1:1) * (10 + Math.random()*28);
-  const dist = (window.innerHeight - y) + 40;
-  el.style.fontSize = size+'px';
-  el.style.setProperty('--dur', dur+'s');
-  el.style.setProperty('--drift', drift+'px');
-  el.style.setProperty('--dy', dist+'px');
+if (activeDrops >= MAX_DROPS) return; // respeta el límite
+const el = document.createElement('span');
+el.className = 'raindrop clickdrop';
+el.style.left = x+'px';
+el.style.top  = y+'px';
+const size = 14 + Math.random()*8;
+const dur  = 3.4 + Math.random()*2.0;
+const drift= (Math.random()<.5?-1:1) * (10 + Math.random()*28);
+const dist = (window.innerHeight - y) + 40;
+el.style.fontSize = size+'px';
+el.style.setProperty('--dur', dur+'s');
+el.style.setProperty('--drift', drift+'px');
+el.style.setProperty('--dy', dist+'px');
 
-  activeDrops++;
-  fx.appendChild(el);
-  setTimeout(()=>{
-    el.remove();
-    activeDrops = Math.max(0, activeDrops-1);
-  }, dur*1000 + 150);
+activeDrops++;
+fx.appendChild(el);
+setTimeout(()=>{
+el.remove();
+activeDrops = Math.max(0, activeDrops-1);
+}, dur*1000 + 150);
 }
 document.addEventListener('pointerdown', e => spawnHeartAtClient(e.clientX, e.clientY));
 
 /* ===== Ramo de hortensias (optimizado en lotes) ===== */
 function drawBouquetOptimized(){
-  const holder = document.getElementById('bouquet');
-  const w=360,h=180, svgNS='http://www.w3.org/2000/svg';
-  const svg=document.createElementNS(svgNS,'svg');
-  svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
-  svg.setAttribute('width',w); svg.setAttribute('height',h);
+const holder = document.getElementById('bouquet');
+const w=360,h=180, svgNS='http://www.w3.org/2000/svg';
+const svg=document.createElementNS(svgNS,'svg');
+svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+svg.setAttribute('width',w); svg.setAttribute('height',h);
 
-  // Tallos (una sola animación de trazo)
-  const stems=document.createElementNS(svgNS,'path');
-  stems.setAttribute('d','M170,160 C180,130 200,110 210,90 M170,160 C160,130 140,115 125,95 M170,160 C175,130 220,120 235,105');
-  stems.setAttribute('fill','none'); stems.setAttribute('stroke','var(--stem)'); stems.setAttribute('stroke-width','6'); stems.setAttribute('class','stroke-draw');
-  svg.appendChild(stems);
+// Tallos (una sola animación de trazo)
+const stems=document.createElementNS(svgNS,'path');
+stems.setAttribute('d','M170,160 C180,130 200,110 210,90 M170,160 C160,130 140,115 125,95 M170,160 C175,130 220,120 235,105');
+stems.setAttribute('fill','none'); stems.setAttribute('stroke','var(--stem)'); stems.setAttribute('stroke-width','6'); stems.setAttribute('class','stroke-draw');
+svg.appendChild(stems);
 
-  // Hojas (dos piezas animadas)
-  const leaf=(x,y,r,rot=0)=>{
-    const p=document.createElementNS(svgNS,'path');
-    p.setAttribute('d',`M ${x} ${y} c ${-r} ${-r/3}, ${-r} ${r/3}, 0 ${r} c ${r} ${-r/3}, ${r} ${r/3}, 0 ${-r} z`);
-    p.setAttribute('fill','var(--leaf)'); p.setAttribute('opacity','.9');
-    p.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
-    p.setAttribute('class','stroke-draw'); p.setAttribute('stroke','#1f5f45'); p.setAttribute('stroke-width','2');
-    svg.appendChild(p);
-  };
-  leaf(145,125,26,-25); leaf(200,125,28,30);
+// Hojas (dos piezas animadas)
+const leaf=(x,y,r,rot=0)=>{
+const p=document.createElementNS(svgNS,'path');
+p.setAttribute('d',`M ${x} ${y} c ${-r} ${-r/3}, ${-r} ${r/3}, 0 ${r} c ${r} ${-r/3}, ${r} ${r/3}, 0 ${-r} z`);
+p.setAttribute('fill','var(--leaf)'); p.setAttribute('opacity','.9');
+p.setAttribute('transform',`rotate(${rot} ${x} ${y})`);
+p.setAttribute('class','stroke-draw'); p.setAttribute('stroke','#1f5f45'); p.setAttribute('stroke-width','2');
+svg.appendChild(p);
+};
+leaf(145,125,26,-25); leaf(200,125,28,30);
 
-  // Tres “pompones” con menos elementos y por lotes
-  const clusters=[{cx:130,cy:95,radius:40,count:48},{cx:170,cy:80,radius:44,count:60},{cx:215,cy:95,radius:40,count:48}];
+// Tres “pompones” con menos elementos y por lotes
+const clusters=[{cx:130,cy:95,radius:40,count:48},{cx:170,cy:80,radius:44,count:60},{cx:215,cy:95,radius:40,count:48}];
 
-  const makePetal=(gx,gy)=>{
-    const g=document.createElementNS(svgNS,'g'); g.setAttribute('class','petal');
-    const base=`hsl(${340+Math.random()*10},85%,${60+Math.random()*10}%)`;
-    const r=3.4+Math.random()*0.9;
-    const addCircle=(dx,dy)=>{ const c=document.createElementNS(svgNS,'circle');
-      c.setAttribute('cx',gx+dx); c.setAttribute('cy',gy+dy); c.setAttribute('r',r); c.setAttribute('fill',base); g.appendChild(c); };
-    addCircle(0,-r); addCircle(r,0); addCircle(0,r); addCircle(-r,0);
-    const center=document.createElementNS(svgNS,'circle');
-    center.setAttribute('cx',gx); center.setAttribute('cy',gy); center.setAttribute('r',1.4); center.setAttribute('fill','#ffd6e3'); g.appendChild(center);
-    return g;
-  };
+const makePetal=(gx,gy)=>{
+const g=document.createElementNS(svgNS,'g'); g.setAttribute('class','petal');
+const base=`hsl(${340+Math.random()*10},85%,${60+Math.random()*10}%)`;
+const r=3.4+Math.random()*0.9;
+const addCircle=(dx,dy)=>{ const c=document.createElementNS(svgNS,'circle');
+c.setAttribute('cx',gx+dx); c.setAttribute('cy',gy+dy); c.setAttribute('r',r); c.setAttribute('fill',base); g.appendChild(c); };
+addCircle(0,-r); addCircle(r,0); addCircle(0,r); addCircle(-r,0);
+const center=document.createElementNS(svgNS,'circle');
+center.setAttribute('cx',gx); center.setAttribute('cy',gy); center.setAttribute('r',1.4); center.setAttribute('fill','#ffd6e3'); g.appendChild(center);
+return g;
+};
 
-  // Batching: insertar 12 “florcitas” por frame para no congelar
-  const items=[];
-  clusters.forEach(cl=>{
-    for(let i=0;i<cl.count;i++){
-      const a=Math.PI*2*Math.random();
-      const rr=Math.sqrt(Math.random())*cl.radius;
-      const x=cl.cx+Math.cos(a)*rr;
-      const y=cl.cy+Math.sin(a)*rr;
-      items.push({x,y});
-    }
-  });
+// Batching: insertar 12 “florcitas” por frame para no congelar
+const items=[];
+clusters.forEach(cl=>{
+for(let i=0;i<cl.count;i++){
+const a=Math.PI*2*Math.random();
+const rr=Math.sqrt(Math.random())*cl.radius;
+const x=cl.cx+Math.cos(a)*rr;
+const y=cl.cy+Math.sin(a)*rr;
+items.push({x,y});
+}
+});
 
-  let idx=0;
-  function step(){
-    const frag=document.createDocumentFragment();
-    for(let k=0;k<12 && idx<items.length; k++, idx++){
-      const {x,y}=items[idx];
-      const pet=makePetal(x,y);
-      // delay suave sin bloquear el hilo: usa transition-delay vía style animationDelay
-      pet.style.animationDelay = (idx*8) + 'ms';
-      frag.appendChild(pet);
-    }
-    svg.appendChild(frag);
-    if(idx<items.length) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+let idx=0;
+function step(){
+const frag=document.createDocumentFragment();
+for(let k=0;k<12 && idx<items.length; k++, idx++){
+const {x,y}=items[idx];
+const pet=makePetal(x,y);
+// delay suave sin bloquear el hilo: usa transition-delay vía style animationDelay
+pet.style.animationDelay = (idx*8) + 'ms';
+frag.appendChild(pet);
+}
+svg.appendChild(frag);
+if(idx<items.length) requestAnimationFrame(step);
+}
+requestAnimationFrame(step);
 
-  holder.appendChild(svg);
+holder.appendChild(svg);
 }
 </script>
 </body>
 </html>
-
