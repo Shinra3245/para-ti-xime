@@ -10,7 +10,7 @@
     --bg:#0f0f13;
     --leaf:#2fa36b;
     --stem:#2b7a57;
-    --click:#A7C7FF; /* azul pastel para clicks */
+    --click:#A7C7FF; 
   }
 
   *{ box-sizing:border-box }
@@ -154,7 +154,7 @@
   let activeDrops = 0;
   const MAX_DROPS = 140;
   const RAIN_INTERVAL = 180;
-
+/* lluvia de corazones */
   function spawnRain(){
     if(activeDrops >= MAX_DROPS) return;
     const el = document.createElement('span');
@@ -171,7 +171,7 @@
     setTimeout(()=>{ el.remove(); activeDrops=Math.max(0,activeDrops-1); }, dur*1000+120);
   }
   if (!reduce) setInterval(spawnRain, RAIN_INTERVAL);
-
+/* Corazon dibujado */
   const grid = document.getElementById('grid');
   function buildHeart(){
     const COLS=29, ROWS=23, DOT=14;
@@ -196,7 +196,7 @@
     setTimeout(drawBouquetOptimized, 2500);
   }
   setTimeout(buildHeart, 4000);
-
+/* corazones al hacer click  */
   function spawnHeartAtClient(x,y){
     if(activeDrops >= MAX_DROPS) return;
     const el = document.createElement('span');
@@ -216,7 +216,7 @@
     setTimeout(()=>{ el.remove(); activeDrops=Math.max(0,activeDrops-1); }, dur*1000+150);
   }
   document.addEventListener('pointerdown', e => spawnHeartAtClient(e.clientX, e.clientY));
-
+/* ramo de flores */
   function drawBouquetOptimized(){
     const holder = document.getElementById('bouquet');
     const w=360,h=180, svgNS='http://www.w3.org/2000/svg';
@@ -280,3 +280,4 @@
 </script>
 </body>
 </html>
+
