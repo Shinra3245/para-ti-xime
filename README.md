@@ -26,17 +26,19 @@
 ## 📂 Estructura del proyecto
 
 ```plaintext
-index.html      # Página principal con HTML, CSS y JS integrados
+index.html      # Página principal donde se muestra el mensaje de amor
+style.css     # Página de los principales estilos 
+animaciones.js      # Página donde se crean las funciones para cada animacion
 ```
 
-> 💡 **No requiere dependencias externas**: Todo el código y estilos están en un único archivo HTML.
+> 💡 **No requiere dependencias externas**: 
 
 ---
 
 ## 🚀 Uso
 
 1. 📥 **Clonar o descargar** este repositorio.
-2. 🌐 **Abrir** el archivo `index.html` en tu navegador o visitar el enlace en vivo.
+2. 🌐 **Abrir** los archivos `index.html,style.css,animaciones.js` en tu navegador o visitar el enlace en vivo.
 3. 🎯 **Interactuar**:
    - Disfruta la lluvia de corazones.
    - Haz clic o toca para añadir más corazones.
