@@ -48,9 +48,9 @@ animaciones.js      # Página donde se crean las funciones para cada animacion
 
 ## 📱 Compatibilidad
 
-- ✅ Navegadores modernos (Chrome, Edge, Firefox, Safari).
-- 📱 Adaptado para pantallas móviles y escritorio.
-- ♿ Respeta `prefers-reduced-motion` para usuarios que desactivan animaciones.
+- Navegadores modernos (Chrome, Edge, Firefox, Safari).
+- Adaptado para pantallas móviles y escritorio.
+- Respeta `prefers-reduced-motion` para usuarios que desactivan animaciones.
 
 ---
 
