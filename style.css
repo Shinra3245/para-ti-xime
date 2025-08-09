@@ -1,0 +1,280 @@
+ :root {
+      --rose: #ff4d6d;
+      --bg: #0f0f13;
+      --leaf: #2fa36b;
+      --stem: #2b7a57;
+      --click: #A7C7FF;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @media (max-width:600px) {
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 20px 0;
+      }
+    }
+
+    .raindrop {
+      position: fixed;
+      top: -24px;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--rose);
+      filter: drop-shadow(0 0 6px #ff9eb1);
+      opacity: 0;
+      animation: fall var(--dur, 5s) linear forwards;
+      pointer-events: none;
+      user-select: none;
+      z-index: 3;
+    }
+
+    .raindrop::before {
+      content: "❤"
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-24px) translateX(0);
+        opacity: 0
+      }
+
+      10% {
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(110vh) translateX(var(--drift, 0px));
+        opacity: 0
+      }
+    }
+
+    .card {
+      width: min(560px, 92vw);
+      height: min(1020px, 92vh);
+      min-height: 800px;
+      background: #151722;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 36px #0008;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+      margin: 24px 0;
+    }
+
+    @media (max-width:600px) {
+      .card {
+        height: 96vh;
+        min-height: 1050px
+      }
+    }
+
+    .top {
+      position: relative;
+      flex: 0 0 58%
+    }
+
+    .stage {
+      position: absolute;
+      inset: 12px;
+      border-radius: 18px;
+      background: radial-gradient(1200px 420px at 50% 120%, #1d2030, #141621 60%, #10121a);
+      overflow: hidden;
+    }
+
+    .hint {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      font-size: 12px;
+      opacity: .7
+    }
+
+    .grid {
+      position: absolute;
+      inset: 6% 8% auto 8%;
+      top: 0%;
+      display: none;
+      place-content: center;
+      gap: 6px;
+      z-index: 1;
+    }
+
+    .grid.show {
+      display: grid
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      display: block;
+      transform: scale(0);
+      opacity: 0
+    }
+
+    .dot::before {
+      content: "❤";
+      display: block;
+      text-align: center;
+      font-size: 14px;
+      color: var(--rose)
+    }
+
+    .dot.reveal {
+      animation: reveal .7s both
+    }
+
+    @keyframes reveal {
+      0% {
+        transform: scale(.2);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .bouquet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 6%;
+      height: 48%;
+      display: grid;
+      place-items: end center;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    svg {
+      overflow: visible
+    }
+
+    .stroke-draw {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: draw 1.2s ease-out forwards
+    }
+
+    @keyframes draw {
+      to {
+        stroke-dashoffset: 0
+      }
+    }
+
+    .petal {
+      transform: scale(0);
+      transform-origin: center;
+      animation: bloom .45s ease-out forwards;
+      filter: drop-shadow(0 0 4px #ffb3c6);
+    }
+
+    @keyframes bloom {
+      60% {
+        transform: scale(1.12)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .msg {
+      flex: 1 1 auto;
+      padding: 10px 16px 18px;
+      text-align: center;
+      color: #ffe6ec;
+      font-weight: 600;
+      text-shadow: 0 1px 0 #0006;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(18px, 4.5vw, 26px);
+      color: var(--rose)
+    }
+
+    p {
+      margin: 6px 0 0;
+      line-height: 1.45;
+      font-size: clamp(14px, 4vw, 16px)
+    }
+
+    #fx {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999
+    }
+
+    .clickdrop {
+      animation: fallFrom var(--dur, 5s) linear forwards;
+      color: var(--click);
+      filter: drop-shadow(0 0 6px var(--click));
+    }
+
+    @keyframes fallFrom {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0
+      }
+
+      10% {
+        opacity: 1
+      }
+
+      100% {
+        transform: translateY(var(--dy)) translateX(var(--drift, 0px));
+        opacity: 0
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .raindrop {
+        animation: none;
+        opacity: .6;
+        top: 8px;
+      }
+
+      .stroke-draw {
+        animation: none;
+        stroke-dashoffset: 0
+      }
+
+      .petal {
+        animation: none;
+        transform: scale(1)
+      }
+
+      .dot.reveal {
+        animation: none;
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
