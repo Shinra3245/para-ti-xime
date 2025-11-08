@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Aniversario</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="falling-texts-background"></div>
+
+    <div id="access-screen">
+        <div class="access-box">
+            <h2 id="question-title">Una pregunta para comenzar nuestra historia...</h2>
+            <p id="question-text"></p>
+            <input type="text" id="answer-input" placeholder="Escribe tu respuesta aquí">
+            <button id="submit-answer">Entrar</button>
+            <a href="#" id="hint-link">¿Necesitas una pista?</a>
+        </div>
+    </div>
+
+    <main id="main-content" style="display: none;">
+        <div id="info-button">?</div>
+
+        <audio id="background-music"></audio>
+
+        <h1>Nuestra Historia... Un Año Juntos</h1>
+
+        <div id="timeline">
+        </div>
+
+    </main>
+
+    <div id="modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modal-image" src="" alt="Recuerdo">
+            <p id="modal-text"></p>
+        </div>
+    </div>
+
+    <div id="info-modal" class="modal-container">
+        <div class="modal-content">
+            <span class="close-button" id="info-close-button">&times;</span>
+            <p>Toda la música que escuchas en esta página son canciones que, de una u otra forma, me recuerdan a ti y a los momentos que hemos compartido.</p>
+            
+            <div class="music-player-container">
+                <p id="song-title">Cargando...</p>
+                <input type="range" id="seek-bar" value="0">
+                <div class="music-controls">
+                    <button id="prev-song-button">&larr;</button>
+                    <button id="next-song-button">&rarr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
