@@ -1,96 +1,150 @@
-// --- CONFIGURACIÓN ---
-const PASSWORD = "014"; 
-let currentCode = [0, 0, 0];
-// ---------------------
+// 1. CONFIGURACIÓN DEL TIMER
+// Nota: Los meses en JS van de 0 a 11 (Enero=0, Octubre=9)
+const startDate = new Date(2025, 9, 8); 
 
-function toggleMusic() {
-    const music = document.getElementById('bg-music');
-    const playIcon = document.getElementById('play-icon');
-    const pauseIcon = document.getElementById('pause-icon');
-    
-    if (music.paused) {
-        music.play();
-        playIcon.classList.remove('active'); // Oculta el icono de play
-        pauseIcon.classList.add('active');    // Muestra el icono de pause
-    } else {
-        music.pause();
-        playIcon.classList.add('active');     // Muestra el icono de play
-        pauseIcon.classList.remove('active'); // Oculta el icono de pause
+function updateTimer() {
+    const now = new Date();
+    const diff = now - startDate;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / 1000 / 60) % 60);
+
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+        timerElement.innerText = `${days} días, ${hours}h y ${mins}m juntos`;
     }
 }
 
+setInterval(updateTimer, 60000);
+updateTimer();
 
-// Función para mostrar la página correcta y ocultar las demás
-function showPage(pageId) {
-    // Ocultar todas las pantallas
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
+// 2. NAVEGACIÓN ENTRE PANTALLAS
+function showScreen(screenId) {
+    document.getElementById('screen1').classList.add('hidden');
+    document.getElementById('screen2').classList.add('hidden');
+    
+    const target = document.getElementById(screenId);
+    if(target) target.classList.remove('hidden');
+}
+
+// 3. LÓGICA DEL REPRODUCTOR DE MÚSICA
+let currentSongIndex = 0;
+
+function showSong(index) {
+    // 1. Elementos de Canciones
+    const songs = document.querySelectorAll('.song-card');
+    // 2. Elementos de Dedicatorias (NUEVO)
+    const dedications = document.querySelectorAll('.dedication-text');
+
+    if (songs.length === 0) return;
+
+    // A. OCULTAR TODO (Canciones y Dedicatorias)
+    songs.forEach(song => song.classList.remove('active'));
+    dedications.forEach(d => d.classList.remove('active')); // Ocultamos textos
+
+    // B. Lógica del índice (Carrusel Infinito)
+    if (index >= songs.length) currentSongIndex = 0;
+    else if (index < 0) currentSongIndex = songs.length - 1;
+    else currentSongIndex = index;
+
+    // C. MOSTRAR CANCIÓN ACTUAL
+    const activeCard = songs[currentSongIndex];
+    activeCard.classList.add('active');
+
+    // D. MOSTRAR DEDICATORIA ACTUAL (NUEVO)
+    // Verificamos si existe una dedicatoria para este número de canción
+    if (dedications[currentSongIndex]) {
+        dedications[currentSongIndex].classList.add('active');
+    }
+
+    // E. Resetear Karaoke (Lógica que ya tenías)
+    const lyricsContainer = activeCard.querySelector('.lyrics-container');
+    if (lyricsContainer) lyricsContainer.classList.remove('playing');
+    
+    prepareKaraoke(activeCard);
+    restartAnimation(activeCard);
+}
+
+function nextSong() {
+    showSong(currentSongIndex + 1);
+}
+
+function prevSong() {
+    showSong(currentSongIndex - 1);
+}
+
+// 4. LÓGICA KARAOKE
+function prepareKaraoke(card) {
+    const textElement = card.querySelector('.karaoke-text');
+    const container = card.querySelector('.lyrics-container');
+    
+    if (!textElement || textElement.dataset.prepared) return;
+
+    // Aseguramos que el contenedor no tenga la clase 'playing'
+    if(container) container.classList.remove('playing');
+
+    const text = textElement.innerText;
+    textElement.innerHTML = '';
+    
+    const speed = parseFloat(textElement.dataset.speed) || 0.4; 
+
+    const words = text.split(' ');
+    
+    words.forEach((word, index) => {
+        const span = document.createElement('span');
+        span.innerText = word;
+        span.className = 'word';
+        
+        // --- CORRECCIÓN IMPORTANTE AQUÍ ---
+        // Agregamos la palabra 'paused' directamente en la definición de la animación
+        // para que JS no la arranque automáticamente.
+        span.style.animation = `highlight 0.5s forwards paused ${index * speed}s`; 
+        
+        textElement.appendChild(span);
     });
-    
-    // Mostrar la pantalla deseada
-    const page = document.getElementById(pageId);
-    page.classList.add('active');
+
+    textElement.dataset.prepared = "true";
 }
 
-// Función para mostrar la pista
-function showHint() {
-    const hintText = document.getElementById('hint-text');
-    hintText.classList.remove('hidden'); // Muestra el texto de la pista
+function restartAnimation(card) {
+    // Esta función fuerza al navegador a "rebobinar" la animación a gris
+    const words = card.querySelectorAll('.word');
+    words.forEach(word => {
+        const originalAnim = word.style.animation;
+        word.style.animation = 'none';
+        word.offsetHeight; /* hack para forzar repintado */
+        word.style.animation = originalAnim;
+    });
 }
 
-function changeDigit(index, direction) {
-    let currentValue = currentCode[index];
-    currentValue += direction; // Suma 1 o resta 1
+// 5. DETECTOR DE CLICS EN SPOTIFY (El Truco)
+function monitorSpotifyClick() {
+    window.addEventListener('blur', () => {
+        // Damos un pequeño respiro para que el navegador decida quién tiene el foco
+        setTimeout(() => {
+            const activeElement = document.activeElement;
+            const activeCard = document.querySelector('.song-card.active');
 
-    // Crea un bucle de 0 a 9
-    if (currentValue > 9) {
-        currentValue = 0;
-    }
-    if (currentValue < 0) {
-        currentValue = 9;
-    }
-
-    // Actualiza el array y la pantalla
-    currentCode[index] = currentValue;
-    document.getElementById(`digit-display-${index}`).innerText = currentValue;
+            // Verificamos si hay una tarjeta activa
+            if (activeCard) {
+                const iframe = activeCard.querySelector('iframe');
+                
+                // SI el elemento activo es el IFRAME de nuestra tarjeta actual...
+                if (activeElement === iframe) {
+                    const lyricsContainer = activeCard.querySelector('.lyrics-container');
+                    if (lyricsContainer) {
+                        console.log("Clic detectado en Spotify -> Iniciando Karaoke"); // Para depurar
+                        lyricsContainer.classList.add('playing');
+                    }
+                }
+            }
+        }, 200); // Aumenté un poco el tiempo a 200ms para ser más seguro
+    });
 }
 
-// Función para revisar la contraseña
-function checkPassword() {
-    // Lee el código desde nuestro array, no desde los inputs
-    const code = currentCode.join(""); // Convierte [0, 1, 4] en "014"
-    
-    if (code === PASSWORD) {
-        // ¡Correcto! Muestra la carta
-        showPage('letter-screen');
-    } else {
-        // ¡Incorrecto!
-        alert('¡Contraseña incorrecta, mi amor! Intenta de nuevo. (Pista: 1 año y 2 meses son...)');
-    }
-    
-    // Resetea el código al fallar
-    currentCode = [0, 0, 0];
-    document.getElementById('digit-display-0').innerText = 0;
-    document.getElementById('digit-display-1').innerText = 0;
-    document.getElementById('digit-display-2').innerText = 0;
-}
-
-
-
-// Función para el botón de "Volver al inicio" en la carta
-function startOver() {
-    showPage('welcome-screen');
-    
-    // Resetea el código al volver al inicio
-    currentCode = [0, 0, 0];
-    document.getElementById('digit-display-0').innerText = 0;
-    document.getElementById('digit-display-1').innerText = 0;
-    document.getElementById('digit-display-2').innerText = 0;
-
-    document.getElementById('hint-text').classList.add('hidden');
-}
-
-// Asegurarse de que la pantalla de bienvenida se muestre al cargar
+// Inicializar todo al cargar
 document.addEventListener('DOMContentLoaded', () => {
-    showPage('welcome-screen');
+    showSong(0); // Mostrar primera canción
+    monitorSpotifyClick(); // Activar el espía de clics
 });
