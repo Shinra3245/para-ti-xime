@@ -1,6 +1,6 @@
 // 1. CONFIGURACIÓN DEL TIMER
 // Nota: Los meses en JS van de 0 a 11 (Enero=0, Octubre=9)
-const startDate = new Date(2025, 9, 8); 
+const startDate = new Date(2024, 8, 8); 
 
 function updateTimer() {
     const now = new Date();
