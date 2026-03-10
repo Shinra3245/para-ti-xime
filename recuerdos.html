@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Máquina de Recuerdos</title>
+    <link rel="stylesheet" href="recuerdos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎡 Máquina de Recuerdos 🎡</h1>
+        <p>Haz clic en la palanca para obtener un momento especial</p>
+        
+        <div class="machine">
+            <div class="glass-sphere">
+                <div class="ball b1"></div>
+                <div class="ball b2"></div>
+                <div class="ball b3"></div>
+            </div>
+            <div class="base">
+                <button id="lever">GIRAR PALANCA</button>
+            </div>
+            <div class="slot" id="output-slot">
+                </div>
+        </div>
+
+        <a href="index.html" class="back-link">Volver al inicio</a>
+    </div>
+
+    <div id="memory-card" class="memory-card hidden">
+        <img id="memory-img" src="" alt="Recuerdo">
+        <p id="memory-text"></p>
+        <button onclick="closeMemory()">Cerrar</button>
+    </div>
+
+    <script src="recuerdos.js"></script>
+</body>
+</html>

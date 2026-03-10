@@ -1,0 +1,400 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- REEMPLAZA TU BLOQUE 'body' ACTUAL CON ESTE --- */
+body {
+    /* 1. Color base: Un tono crema/rosado muy pálido en lugar de blanco frío */
+    background-color: #fff0f5; /* Lavender Blush */
+
+    /* 2. El Fondo Romántico (Gradientes Superpuestos) */
+    background-image:
+        /* Capa superior: Un brillo blanco central para resaltar el contenido */
+        radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%),
+
+        /* Capa media: Una mancha suave de tu color rosa principal (#ff4d6d) arriba a la izquierda */
+        /* Usamos rgba para darle transparencia (0.15 = 15% visible) */
+        radial-gradient(circle at 25% 25%, rgba(255, 77, 109, 0.15) 0%, transparent 55%),
+
+        /* Capa inferior: Una mancha tono coral/durazno abajo a la derecha para dar calidez */
+        radial-gradient(circle at 75% 75%, rgba(255, 182, 193, 0.25) 0%, transparent 55%);
+
+    /* 3. Ajustes técnicos para que el fondo se vea bien */
+    background-repeat: no-repeat; /* Que no se repita como un patrón */
+    background-attachment: fixed; /* El fondo se queda "quieto" mientras haces scroll */
+    background-size: cover;       /* Cubre toda la pantalla siempre */
+
+    /* 4. Tus estilos base anteriores (MANTENER) */
+    color: #333;
+    overflow-x: hidden; /* Evita scroll horizontal */
+    width: 100vw;
+    min-height: 100vh;  /* Asegura que cubra al menos toda la altura de la ventana */
+}
+
+.screen {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* CAMBIO IMPORTANTE: */
+    /* En lugar de centrar verticalmente, empezamos desde arriba para poder hacer scroll */
+    justify-content: flex-start;
+    padding-top: 40px;
+    /* Un poco de aire arriba */
+    padding-bottom: 80px;
+    /* Espacio extra abajo para que el texto no toque el borde final */
+
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+    text-align: center;
+
+    /* ACTIVAR SCROLL EN TODA LA PANTALLA */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Evitamos scroll horizontal */
+
+    /* Suavizado para móviles */
+    -webkit-overflow-scrolling: touch;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+/* Título de Aniversario */
+.anniversary-title {
+    font-size: 2.2rem;
+    color: #ff4d6d;
+    font-weight: 800;
+    margin-bottom: -10px;
+    /* Para que quede cerca de la animación */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Timer y Textos */
+.timer-container p {
+    font-size: 0.9rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#timer {
+    font-size: 1.6rem;
+    color: #ff4d6d;
+    margin: 5px 0 15px 0;
+}
+
+.love-message {
+    font-style: italic;
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    max-width: 90%;
+}
+
+/* Botones */
+.nav-btn {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    cursor: pointer;
+}
+
+.back-btn {
+    background: #bbb;
+    margin-top: 20px;
+}
+
+/* Carrusel */
+.carousel-container {
+    width: 100%;
+}
+
+.title-cards {
+    margin-bottom: 20px;
+    color: #ff4d6d;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    min-width: 85vw;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    scroll-snap-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.quote {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+/* --- AGREGAR AL FINAL DE TU CSS --- */
+
+/* Contenedor que alinea: Botón Arriba -> Canción -> Botón Abajo */
+.music-carousel {
+    display: flex;
+    flex-direction: column;
+    /* Esto pone los elementos en columna (vertical) */
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    /* Espacio entre botones y tarjeta */
+    width: 100%;
+    max-width: 400px;
+    /* Ancho máximo para que no se vea gigante en PC */
+    margin: 0 auto;
+    /* Centrado horizontal */
+}
+
+/* Estilo base de la tarjeta de canción */
+.song-card {
+    display: none;
+    /* Por defecto OCULTAMOS todas las canciones */
+    width: 100%;
+    background: transparent;
+    /* Fondo transparente para que se vea el iframe */
+    /* Eliminamos bordes y sombras del contenedor para que solo se vea el player de Spotify */
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    /* Evita que salgan barras de scroll */
+}
+
+/* Clase mágica que activaremos con JavaScript */
+.song-card.active {
+    display: block;
+    /* Solo mostramos la canción que tenga esta clase */
+    animation: fadeEffect 0.5s;
+    /* Una pequeña animación suave al cambiar */
+}
+
+/* Ajuste del iframe para que no tenga barras de scroll internas */
+.song-card iframe {
+    width: 100%;
+    /* La altura 352px es estándar de Spotify, la respetamos o usamos 100% si el padre tiene altura fija */
+    display: block;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Sombra estética al reproductor */
+}
+
+/* Animación de desvanecimiento suave */
+@keyframes fadeEffect {
+    from {
+        opacity: 0.4;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Ajuste específico para tus botones de navegación de música */
+.music-carousel .nav-btn {
+    /* Hacemos los botones un poco más pequeños o redondos si prefieres */
+    padding: 10px 20px;
+    margin: 0;
+    /* Quitamos márgenes extraños */
+}
+
+/* --- ACTUALIZAR ESTA CLASE EN TU CSS --- */
+
+.lyrics-container {
+    margin-top: 15px;
+    padding: 0 15px;
+    /* Espacio a los lados */
+    text-align: center;
+
+    /* CONFIGURACIÓN DEL SCROLL */
+    width: 100%;
+    max-height: 150px;
+    /* Aquí limitamos la altura: si el texto pasa de 150px, aparece el scroll */
+    overflow-y: auto;
+    /* Esto activa la barra de desplazamiento solo si es necesario */
+
+    /* Mantenemos el flex para centrar el contenido */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    /* Importante: alinea el texto al principio del contenedor */
+
+    /* Suavizado para el scroll en móviles */
+    -webkit-overflow-scrolling: touch;
+}
+
+.lyrics-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* El fondo de la barra (el carril) */
+.lyrics-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+/* El color de la barra que se mueve */
+.lyrics-container::-webkit-scrollbar-thumb {
+    background-color: #ff4d6d;
+    /* Tu color rosa */
+    border-radius: 4px;
+    border: 2px solid transparent;
+    /* Truco para que se vea más redondita */
+    background-clip: content-box;
+}
+
+/* Color al pasar el mouse por la barra */
+.lyrics-container::-webkit-scrollbar-thumb:hover {
+    background-color: #ff2a55;
+}
+
+/* Contenedor de la letra */
+
+/* El contenedor del texto (ahora solo agrupa) */
+.karaoke-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 600;
+    color: #ccc;
+    /* Color inicial (apagado/gris) */
+}
+
+/* ESTILO DE CADA PALABRA */
+.word {
+    display: inline-block;
+    margin-right: 5px;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, color 0.3s ease;
+
+    /* IMPORTANTE: La animación se carga pero NO avanza */
+    animation-play-state: paused;
+}
+
+/* ANIMACIÓN: Cuando la palabra se activa */
+.word.lit {
+    color: #ff4d6d;
+    /* Tu color rosa */
+    opacity: 1;
+
+    text-shadow: 0 0 10px rgba(255, 77, 109, 0.4);
+}
+
+@keyframes highlight {
+    to {
+        color: #ff4d6d;
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(255, 77, 109, 0.6);
+    }
+}
+
+.lyrics-container.playing .word {
+    animation-play-state: running !important;
+}
+
+/* Contenedor principal de las dedicatorias */
+.dedication-container {
+    margin-top: 25px;
+    margin-bottom: 30px; /* Espacio antes del botón o final de página */
+    width: 100%;
+    max-width: 400px;
+    padding: 0 15px;
+    
+    /* Quitamos alturas fijas para que crezca según el texto */
+    height: auto; 
+    min-height: 100px;
+}
+
+/* Ocultamos todas las dedicatorias por defecto */
+.dedication-text {
+    display: none;
+    animation: fadeText 0.8s ease-in-out;
+}
+
+/* Solo mostramos la activa */
+.dedication-text.active {
+    display: block;
+}
+
+/* Estilo del texto de la nota */
+.love-note {
+    font-size: 0.95rem;
+    color: #555;
+    /* Gris suave */
+    font-style: italic;
+    background-color: rgba(255, 255, 255, 0.6);
+    /* Fondo semitransparente */
+    padding: 15px;
+    border-radius: 15px;
+    border-left: 4px solid #ff4d6d;
+    /* Una línea rosa decorativa a la izquierda */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    line-height: 1.5;
+}
+
+/* Animación suave para el texto */
+@keyframes fadeText {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- AGREGAR AL FINAL DE TU CSS --- */
+
+/* Barra de desplazamiento para TODA la pantalla */
+.screen::-webkit-scrollbar {
+    width: 10px;
+    /* Un poco más ancha para que sea fácil de agarrar */
+}
+
+.screen::-webkit-scrollbar-track {
+    background: #fffafa;
+    /* Mismo color que tu fondo */
+}
+
+.screen::-webkit-scrollbar-thumb {
+    background-color: #ffb3c1;
+    /* Un rosa más clarito */
+    border-radius: 5px;
+    border: 2px solid #fffafa;
+    /* Borde blanco para efecto flotante */
+}
+
+.screen::-webkit-scrollbar-thumb:hover {
+    background-color: #ff4d6d;
+    /* Rosa fuerte al tocarla */
+}

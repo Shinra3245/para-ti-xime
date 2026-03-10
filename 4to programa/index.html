@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Persona Favorita</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+</head>
+
+<body>
+
+    <section id="screen1" class="screen">
+        <div class="content">
+            <h2 class="anniversary-title">¡Feliz Aniversario!</h2>
+
+            <dotlottie-wc src="https://lottie.host/49b80f12-98b9-4f16-91ab-3506caa65bf4/24j1ZVNUe0.lottie"
+                style="width: 280px; height: 280px" autoplay loop>
+            </dotlottie-wc>
+
+            <div class="timer-container">
+                <p>Llevamos juntos:</p>
+                <h1 id="timer">Calculando...</h1>
+            </div>
+
+            <p class="love-message">"Gracias por permitirme ser parte de tu vida, de dedicarme todo este tiempo, te prometo que cada dia que pasa mi amor por ti aumenta, quiero que podamos tener un futuro juntos, una vida a tu lado es mi mayor sueño y mi mayor deseo dia con dia, "</p>
+
+            <button class="nav-btn" onclick="showScreen('screen2')">Lo que me haces sentir</button>
+        </div>
+    </section>
+
+    <section id="screen2" class="screen hidden">
+        <div class="carousel-container">
+            <h2 class="title-cards">Nuestras Canciones</h2>
+            <div class="music-carousel">
+
+                <button class="nav-btn prev-btn" onclick="prevSong()">&#10094;</button>
+
+                <div class="song-card active">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/6QJCZyJv1fhkCyZA3lRoAD?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text" data-speed="2.5">
+                            "Viento
+                            Amárranos
+                            Tiempo
+                            Detente muchos años
+                            Viento
+                            Amárranos
+                            Tiempo
+                            Detente muchos años"
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="song-card">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/0v9UztY5A12cJUsWD7PZzS?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text" data-speed="0.6">
+                            "Porque fueras mía
+                            Y ayyyyy, mi amor, por favor dime
+                            Cuál es la receta para hacerte el amor
+                            Que nunca olvides
+                            Que volver a vernos sea algo tentador
+                            Amor de cine
+                            Eres como el agua en un día de calor"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="song-card">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/7MVIfkyzuUmQ716j8U7yGR?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text">
+                            " frío o calor, picnic, Netflix, voy en tren
+                            En ten o fifteen estoy, y siendo honesto, baby
+                            Negra, rara vez te vi bien 'tando con aquel
+                            No lo sé, no me vo'a meter
+                            Pero te noté algo mentirosa
+                            Cuando te besé, sentí que vos sentiste cosa'
+                            Entonces supe que
+                            Sos lo que me da paz
+                            Lo que andaba buscando
+                            Y esa felicidad
+                            Que hace que ande sonriendo"
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="song-card">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/536jZQnDc8UczLFWyRqEzt?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text" data-speed="0.2">
+                            "No sabes cuánto es que me subes cuando tú te bajas
+                            Disfruto más cuando te vienes que cuando te vas
+                            Yo te prometo no se van a perder estas ganas
+                            Regálame el presente, ni pa'lante ni pa'trás
+                            Lo que tenemos es ahora, no ayer ni mañana
+                            Lo que te quito es lo poquito que me quieras dar
+                            Desde que entraste tantas cosas buenas de mí sacas
+                            Te invito a formar parte de mi realidad
+                            Cambias, perspectivas y rutinas
+                            Planteas, nuevas formas de vivir la vida
+                            Navegas, esa carabela que conquista
+                            Rayas, todos mis muritos como artista"
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="song-card">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/2k4MjD7I4ddpwwZKxHrONk?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text" data-speed="0.2">
+                            "Y esta vez ya no voy a soltarte
+                            Poner mi mano en tu mano
+                            Tenerte siempre a mi lado
+                            Confieso
+                            Que nunca había perdido la noción del tiempo
+                            Es que no te dejo de pensar
+                            Confieso"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="song-card">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px"
+                        src="https://open.spotify.com/embed/track/609ItcFreOqmwRjmBbocds?utm_source=generator"
+                        width="100%" height="352" frameBorder="0" allowfullscreen=""
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"></iframe>
+                    <div class="lyrics-container">
+                        <p class="karaoke-text" data-speed="0.3">
+                            "el amor que te tengo
+                            El mundo te entrego en las manos, por ti lo que quieras
+                            (Por ti lo que quieras, lo que quieras, por ti lo que quieras)
+                            Gracias a ti, por fin lo vi
+                            Lo que yo siempre anhelaba siempre estuvo enfrente de mí (enfrente de mí)
+                            Nunca faltaba tu mano en mi espalda y no la sentí"
+                        </p>
+                    </div>
+                </div>
+
+                <button class="nav-btn next-btn" onclick="nextSong()">❯</button>
+            </div>
+
+            <div class="dedication-container">
+
+                <div class="dedication-text active">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> Esta canción me recuerda al día que nos conocimos,
+                        porque no queria que el tiempo terminara, quiero estar una eternidad junto a ti 
+                    </p>
+                </div>
+
+                <div class="dedication-text">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> Quiero expresar con esta cancion que me haces sentir como en una pelicula, el tener un amor de cine, eres alguien indispensable en mi vida
+                    </p>
+                </div>
+
+                <div class="dedication-text">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> Con esta cancion expreso lo tan extraño y raro que fue para mi el encontrar mi felicidad en una persona tan maravillosa como tu, y no digo extraño de malo, sino una coincidencia perfecta
+                    </p>
+                </div>
+
+                <div class="dedication-text">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> En esta melodia quiero expresar lo bien que me haces sentir y el bien que provocas en mi vida, desde el momento que te conoci creaste cambios magicos en mi, cambiaste mi perspectiva y mi futuro para bien, no quiero que te vayas nunca de mi vida porque me haces muy feliz y quiero hacerte feliz 
+                    </p>
+                </div>
+
+                <div class="dedication-text">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> Te quiero confesar que el tenerte en mi vida y que me permitas ser parte de la tuya es algo maravilloso, te prometo que siempre te amare y te cuidare, debo confesar que nunca habia experimentado tanta felicidad en mi vida hasta que llegaste tù
+                    </p>
+                </div>
+
+                <div class="dedication-text">
+                    <p class="love-note">
+                        💌 <strong>Para ti:</strong> Te prometo que te amare en los dias mas felices de tu vida, y en los dias donde sientas que no puedes mas, que el mundo se cae, yo estare aqui para ti, sosteniendo tu mano y siendo tu acompañante en esta vida, estare aqui para cuidarte y protegerte, eres mi coincidencia mas hermosa 
+                    </p>
+                </div>
+
+
+            </div>
+
+
+        
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
