@@ -1,8 +1,8 @@
 const recuerdos = [
-    { img: 'foto1.jpeg', texto: 'Nuestra primera cita ' },
-    { img: 'foto2.jpeg', texto: 'Cuando nos encontrabamos en aquel cafe disfrutando el momento' },
-    { img: 'foto3.jpeg', texto: 'En galerias paseando y riendo' },
-    { img: 'foto4.jpeg', texto: 'Cuando vimos la pelicula de Venom' }
+    { img: 'resources/foto1.jpeg', texto: 'Nuestra primera cita ' },
+    { img: 'resources/foto2.jpeg', texto: 'Cuando nos encontrabamos en aquel cafe disfrutando el momento' },
+    { img: 'resources/foto3.jpeg', texto: 'En galerias paseando y riendo' },
+    { img: 'resources/foto4.jpeg', texto: 'Cuando vimos la pelicula de Venom' }
 ];
 
 const lever = document.getElementById('lever');
