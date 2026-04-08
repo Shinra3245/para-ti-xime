@@ -91,16 +91,11 @@ body {
     stroke: #7cb342;
 }
 
-.flower-svg #flower1 .petals path {
+/* Base style for petals, stroke colors will be applied via inline styles or CSS vars */
+.flower-svg .petals path {
     stroke: var(--primary-color);
 }
 
-.flower-svg #flower2 .petals path {
-    stroke: #ffffff;
-    stroke-width: 4;
-}
-
-/* Blanca con borde más grueso */
 .flower-svg .center {
     fill: #ffca28;
     animation: popIn 0.5s ease-out forwards;
@@ -127,47 +122,7 @@ body {
     }
 }
 
-/* Retrasos para la secuencia de animación */
-.flower-svg #flower1 .stem {
-    animation-delay: 0.5s;
-}
-
-.flower-svg #flower2 .stem {
-    animation-delay: 0.7s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(1) {
-    animation-delay: 1.5s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(2) {
-    animation-delay: 1.7s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(3) {
-    animation-delay: 1.9s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(4) {
-    animation-delay: 2.1s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(5) {
-    animation-delay: 2.3s;
-}
-
-.flower-svg #flower1 .petals path:nth-child(6) {
-    animation-delay: 2.5s;
-}
-
-.flower-svg #flower2 .petals path {
-    animation-delay: 2.7s;
-}
-
-/* Todos los pétalos blancos a la vez */
-.flower-svg .center {
-    animation-delay: 3.5s;
-}
+/* Retrasos para la secuencia de animación se manejan desde JS para las flores generadas dinámicamente */
 
 /* --- BOTÓN PRINCIPAL (CALL TO ACTION) --- */
 .cta-button {
@@ -269,6 +224,7 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
     color: var(--text-color);
     padding: 20px;
+    box-sizing: border-box;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -278,6 +234,10 @@ body {
     transform: translateY(30px);
     transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 .letter-card .card-content p {
