@@ -1,0 +1,352 @@
+/* --- CONFIGURACIÓN GENERAL Y FUENTES --- */
+:root {
+    --bg-color: #fff5f8;
+    --primary-color: #ff6b81;
+    --text-color: #3d3d3d;
+    --card-bg: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --font-title: 'Dancing Script', cursive;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    /* Evita el scroll entre pantallas */
+}
+
+/* --- ESTRUCTURA DE PANTALLAS --- */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    /* Desactiva interacción cuando está oculto */
+}
+
+.screen.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    /* Activa interacción cuando es visible */
+}
+
+.content-wrapper {
+    text-align: center;
+    padding: 20px;
+}
+
+/* --- PANTALLA DE INICIO --- */
+.main-title {
+    font-family: var(--font-title);
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin: 0 0 20px 0;
+    animation: fadeInDown 1s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- ANIMACIÓN DE FLORES (SVG) --- */
+.flower-container {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+.flower-svg .flower path {
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: draw 2s ease-out forwards;
+}
+
+.flower-svg .stem {
+    stroke: #7cb342;
+}
+
+.flower-svg #flower1 .petals path {
+    stroke: var(--primary-color);
+}
+
+.flower-svg #flower2 .petals path {
+    stroke: #ffffff;
+    stroke-width: 4;
+}
+
+/* Blanca con borde más grueso */
+.flower-svg .center {
+    fill: #ffca28;
+    animation: popIn 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+/* Animación de dibujo */
+@keyframes draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Animación de "florecer" */
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Retrasos para la secuencia de animación */
+.flower-svg #flower1 .stem {
+    animation-delay: 0.5s;
+}
+
+.flower-svg #flower2 .stem {
+    animation-delay: 0.7s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(1) {
+    animation-delay: 1.5s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(2) {
+    animation-delay: 1.7s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(3) {
+    animation-delay: 1.9s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(4) {
+    animation-delay: 2.1s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(5) {
+    animation-delay: 2.3s;
+}
+
+.flower-svg #flower1 .petals path:nth-child(6) {
+    animation-delay: 2.5s;
+}
+
+.flower-svg #flower2 .petals path {
+    animation-delay: 2.7s;
+}
+
+/* Todos los pétalos blancos a la vez */
+.flower-svg .center {
+    animation-delay: 3.5s;
+}
+
+/* --- BOTÓN PRINCIPAL (CALL TO ACTION) --- */
+.cta-button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 1s ease-out 4s forwards;
+    /* Aparece después de las flores */
+    opacity: 0;
+}
+
+.cta-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 5px 20px rgba(255, 107, 129, 0.5);
+    transform: translateY(-3px);
+}
+
+.cta-button svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover svg {
+    transform: translateX(5px);
+}
+
+.cta-button svg path,
+.cta-button svg polyline {
+    stroke: var(--primary-color);
+    stroke-width: 2;
+}
+
+.cta-button:hover svg path,
+.cta-button:hover svg polyline {
+    stroke: white;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- PANTALLA DE CARTAS (ACORDEÓN) --- */
+.letters-container {
+    display: flex;
+    width: 90vw;
+    max-width: 1000px;
+    height: 70vh;
+    gap: 10px;
+}
+
+.letter-card {
+    flex: 1;
+    /* Todas empiezan con el mismo tamaño */
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: flex 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.7s;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.letter-card h2 {
+    font-family: var(--font-title);
+    color: white;
+    font-size: 2rem;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    margin: 0;
+    writing-mode: vertical-rl;
+    /* Texto vertical */
+    transform: rotate(180deg);
+    transition: opacity 0.5s ease;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.letter-card .card-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--text-color);
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+    overflow-y: auto;
+}
+
+.letter-card .card-content p {
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Estilo cuando una tarjeta está activa */
+.letter-card.active {
+    flex: 6;
+    /* Se expande */
+}
+
+.letter-card.active h2 {
+    opacity: 0;
+    /* Oculta el título vertical */
+}
+
+.letter-card.active .card-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.back-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid #ccc;
+    color: #888;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.back-button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* --- RESPONSIVIDAD PARA MÓVILES --- */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+
+    .flower-container {
+        height: 250px;
+    }
+
+    /* Cambia el acordeón a vertical en móviles */
+    .letters-container {
+        flex-direction: column;
+        width: 90vw;
+        height: 80vh;
+    }
+
+    .letter-card h2 {
+        writing-mode: horizontal-tb;
+        /* Texto horizontal en móvil */
+        transform: rotate(0deg);
+        bottom: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.8rem;
+    }
+
+    .letter-card.active {
+        flex: 6;
+        /* Mantiene la expansión */
+    }
+}
